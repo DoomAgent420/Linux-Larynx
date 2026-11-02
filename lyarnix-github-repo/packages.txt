@@ -1,0 +1,43 @@
+# Lyarnix v0.1 package list (installed by customize.sh inside the Cubic chroot)
+# Desktop
+cinnamon-desktop-environment
+lightdm
+slick-greeter
+yaru-theme-gtk
+yaru-theme-icon
+# Gaming
+steam-installer
+wine
+winetricks
+gamemode
+libvulkan1
+libvulkan1:i386
+mesa-vulkan-drivers
+mesa-vulkan-drivers:i386
+flatpak
+# Apps
+vlc
+libreoffice
+geany
+# Security
+clamav
+clamav-daemon
+clamtk
+timeshift
+# System tools
+gnome-system-monitor
+hardinfo
+openrgb
+plocate
+catfish
+fwupd
+efibootmgr
+mokutil
+ubuntu-drivers-common
+qemu-system-x86
+qemu-utils
+quickemu
+zenity
+curl
+git
+dconf-cli

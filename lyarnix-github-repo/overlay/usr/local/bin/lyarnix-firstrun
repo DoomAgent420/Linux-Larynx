@@ -1,0 +1,11 @@
+#!/bin/bash
+# Runs once at first login: installs Flatpak apps that can't be baked into the ISO.
+MARK="$HOME/.config/lyarnix-firstrun-done"
+[ -f "$MARK" ] && exit 0
+if ! ping -c1 -W3 flathub.org >/dev/null 2>&1; then exit 0; fi   # retry next login
+notify-send "Lyarnix" "Setting up gaming tools (Bottles, ProtonUp-Qt, Mission Center)..."
+flatpak --user remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak --user install -y flathub com.usebottles.bottles net.davidotek.pupgui2 io.missioncenter.MissionCenter
+mkdir -p "$HOME/Lyarnix/VMs" "$(dirname "$MARK")"
+touch "$MARK"
+notify-send "Lyarnix" "Setup complete."

@@ -1,0 +1,6 @@
+#!/bin/bash
+set -e
+[ -f /var/lib/lyarnix-hook-done ] && exit 0
+bash /root/lyarnix-kit/customize.sh
+rm -rf /root/lyarnix-kit
+touch /var/lib/lyarnix-hook-done

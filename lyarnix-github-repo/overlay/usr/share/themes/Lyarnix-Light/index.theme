@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Lyarnix-Light
+Comment=Lyarnix Light theme
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Lyarnix-Light
+MetacityTheme=Yaru
+IconTheme=Yaru
