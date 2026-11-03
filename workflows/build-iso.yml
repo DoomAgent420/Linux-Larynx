@@ -1,0 +1,61 @@
+name: Build Lyarnix ISO
+
+on:
+  workflow_dispatch:      # "Run workflow" button in the Actions tab
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Free up disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force || true
+          df -h /
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y live-build debootstrap squashfs-tools xorriso \
+            isolinux syslinux-utils mtools dosfstools grub-pc-bin grub-efi-amd64-bin \
+            grub-efi-amd64-signed shim-signed gnupg
+          lb --version || true
+
+      - name: Stage the Lyarnix kit into the image build
+        run: |
+          D=live-build/config/includes.chroot/root/lyarnix-kit
+          mkdir -p "$D"
+          cp -r customize.sh packages.txt overlay "$D/"
+
+      - name: Build ISO
+        working-directory: live-build
+        run: |
+          sudo lb clean --purge || true
+          sudo lb config
+          sudo lb build 2>&1 | tee ../build.log
+
+      - name: Collect ISO
+        run: |
+          mkdir -p out
+          sudo find live-build -maxdepth 1 -name '*.iso' -exec mv {} out/Lyarnix.iso \;
+          sudo chown -R "$USER" out
+          ls -lh out
+
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lyarnix-ISO
+          path: out/Lyarnix.iso
+          if-no-files-found: error
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
