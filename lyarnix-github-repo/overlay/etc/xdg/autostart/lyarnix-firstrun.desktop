@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Lyarnix First Run
-Exec=/usr/local/bin/lyarnix-firstrun
-NoDisplay=true
